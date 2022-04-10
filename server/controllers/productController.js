@@ -15,10 +15,15 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
   const productCount = await Product.countDocuments();
   const apiFeature = new ApiFeatures(Product.find(), req.query)
     .search()
-    .filter()
-    .pagination(resultsPerPage);
-  const product = await apiFeature.query;
-  res.status(200).json({ success: true, productCount, product });
+    .filter();
+  // .pagination(resultsPerPage);
+  let product = await apiFeature.query;
+  let filteredProductsCount = product.length;
+  apiFeature.pagination(resultsPerPage);
+  product = await apiFeature.query.clone();
+  res
+    .status(200)
+    .json({ success: true, productCount, product, resultsPerPage, filteredProductsCount });
 });
 //get product details
 exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
