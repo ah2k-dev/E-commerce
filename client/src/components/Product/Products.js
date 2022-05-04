@@ -51,7 +51,6 @@ const Products = ({ match }) => {
     alert,
     keyword,
     currentPage,
-    keyword,
     price,
     category,
     ratings,

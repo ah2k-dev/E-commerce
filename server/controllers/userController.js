@@ -148,24 +148,24 @@ exports.updateProfile = catchAsycErrors(async (req, res, next) => {
     email: req.body.email,
   };
 
-  // if (req.body.avatar !== "") {
-  //   const user = await User.findById(req.user.id);
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
 
-  // const imageId = user.avatar.public_id;
+  const imageId = user.avatar.public_id;
 
-  // await cloudinary.v2.uploader.destroy(imageId);
+  await cloudinary.v2.uploader.destroy(imageId);
 
-  // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-  //   folder: "avatars",
-  //   width: 150,
-  //   crop: "scale",
-  // });
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
 
-  // newUserData.avatar = {
-  //   public_id: myCloud.public_id,
-  //   url: myCloud.secure_url,
-  // };
-  // }
+  newUserData.avatar = {
+    public_id: myCloud.public_id,
+    url: myCloud.secure_url,
+  };
+  }
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
